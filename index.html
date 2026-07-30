@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>하루 타로 & 날씨 부적 - 제미나이 AI</title>
+  <meta name="description" content="오늘의 실시간 날씨와 3장의 타로 카드를 결합하여 Gemini AI가 300자 내외로 하루를 리딩해 주고, 나만의 맞춤 행운 부적을 제작해 드립니다.">
+  
+  <!-- 가독성이 뛰어난 Noto Sans KR 폰트 연결 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS 스타일시트 연결 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 앱 전체 메인 컨테이너 -->
+  <main class="app-container">
+
+    <!-- 1. 앱 상단 헤더 -->
+    <header class="app-header">
+      <div class="brand-badge">Gemini AI & Weather Tarot</div>
+      <h1 class="app-title">하루 타로 & 날씨 부적</h1>
+      <p class="app-subtitle">오늘의 날씨 정보와 타로 카드가 전하는 하루 운세 메시지</p>
+    </header>
+
+    <!-- 2. 실시간 날씨 DB 정보 위젯 -->
+    <section class="weather-card" id="weatherWidget">
+      <div class="weather-info-group">
+        <div class="weather-icon-large" id="weatherIcon">☀️</div>
+        <div class="weather-details">
+          <div class="weather-location" id="weatherLocation">제주시</div>
+          <div class="weather-desc" id="weatherDesc">날씨 정보를 가져오는 중입니다...</div>
+          <div class="weather-sub-stats" id="weatherSubStats">강수확률 --% | 습도 --%</div>
+        </div>
+      </div>
+
+      <!-- 지역 변경 셀렉트 박스 -->
+      <div class="location-selector-group">
+        <label for="locationSelect" class="location-label">지역 선택:</label>
+        <select id="locationSelect" class="select-styled">
+          <option value="">불러오는 중...</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- 3. 타로 카드 3장 뽑기 섹션 -->
+    <section class="tarot-section">
+      <div class="section-instruction">
+        <h2 class="instruction-title">오늘의 타로 카드 3장 선택</h2>
+        <p class="instruction-desc" id="instructionDesc">3장의 카드를 순서대로 선택해 주세요.</p>
+      </div>
+
+      <!-- 카드 3장이 배치될 스프레드 용기 -->
+      <div class="cards-spread-container" id="cardsContainer">
+        <!-- JS(app.js)에서 동적으로 3D 카드 슬롯이 생성됩니다. -->
+      </div>
+
+      <!-- 카드 다시 섞기 버튼 -->
+      <button class="action-btn" id="btnShuffle">
+        <span>🔄</span> 카드 다시 섞기
+      </button>
+    </section>
+
+    <!-- 4. Gemini AI 타로 리딩 결과 섹션 -->
+    <section class="reading-section" id="readingSection">
+      <div class="reading-header">
+        <span style="font-size: 1.6rem;">🔮</span>
+        <h2 class="reading-title">제미나이 AI 하루 리딩</h2>
+      </div>
+
+      <!-- AI 분석 중 로딩 스피너 -->
+      <div class="loading-box" id="loadingBox">
+        <div class="spinner"></div>
+        <p class="loading-text">
+          오늘의 날씨와 선택하신 3장의 카드 기운을 종합하여 리딩을 분석 중입니다...
+        </p>
+      </div>
+
+      <!-- 생성된 AI 리딩 텍스트 본문 (300자 내외) -->
+      <div class="reading-body" id="readingText"></div>
+    </section>
+
+    <!-- 5. 맞춤 행운의 부적 캔버스 및 저장 섹션 -->
+    <section class="amulet-section" id="amuletSection">
+      <div class="amulet-title-box">
+        <h2 class="amulet-title">오늘의 맞춤 행운 부적</h2>
+        <p class="amulet-desc">오늘의 날씨와 타로 기운을 담아 제작된 부적입니다. 저장하여 활용해 보세요.</p>
+      </div>
+
+      <!-- 부적이 그려질 HTML5 Canvas -->
+      <div class="canvas-wrapper">
+        <canvas id="amuletCanvas"></canvas>
+      </div>
+
+      <!-- 이미지 저장 버튼 -->
+      <button class="action-btn save-btn" id="btnSaveAmulet">
+        <span>💾</span> 부적 이미지 저장하기 (PNG)
+      </button>
+    </section>
+
+    <!-- 앱 하단 푸터 -->
+    <footer class="app-footer">
+      <p>© 하루 타로 & 날씨 부적 | Powered by Google Gemini AI & Realtime Weather DB</p>
+    </footer>
+
+  </main>
+
+  <!-- 자바스크립트 로직 모듈 연결 -->
+  <script src="cards.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

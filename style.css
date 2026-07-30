@@ -1,0 +1,480 @@
+/* 
+  ==========================================================================
+  [style.css] 하루 타로 리딩 & 날씨 맞춤 부적 - 정갈한 산세리프 스타일시트
+  - 가독성 높은 Noto Sans KR 폰트 전면 고정
+  - 카드 3D Flip 레이아웃 겹침 버그 완벽 수정
+  ==========================================================================
+*/
+
+/* 1. 전역 스타일 변수 */
+:root {
+  --bg-gradient: linear-gradient(135deg, #fff2f5 0%, #ffe8ed 40%, #ffd6e0 70%, #ffc2d1 100%);
+  --primary-pink: #e63946;
+  --accent-pink: #ff4d6d;
+  --border-pink: #ffb3c1;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  
+  --text-main: #2b2d42;
+  --text-muted: #6c757d;
+  --text-primary: #d90429;
+  
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --shadow-soft: 0 8px 24px rgba(230, 57, 70, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --transition-smooth: all 0.3s ease;
+}
+
+/* 2. 기본 리셋 및 메인 레이아웃 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+  padding-bottom: 60px;
+}
+
+/* 컨테이너 Wrapper */
+.app-container {
+  width: 100%;
+  max-width: 960px;
+  padding: 28px 20px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* 3. 헤더 섹션 */
+.app-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--border-pink);
+  padding: 5px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-pink);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.app-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #c9184a;
+  letter-spacing: -0.5px;
+}
+
+.app-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* 4. 실시간 날씨 위젯 */
+.weather-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.weather-info-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.weather-icon-large {
+  font-size: 2.8rem;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.weather-location {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #a4133c;
+}
+
+.weather-desc {
+  font-size: 1rem;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.weather-sub-stats {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.location-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.select-styled {
+  background: #ffffff;
+  color: var(--text-main);
+  border: 1px solid var(--border-pink);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.select-styled:hover, .select-styled:focus {
+  border-color: var(--accent-pink);
+}
+
+/* 5. 타로 카드 3장 선택 섹션 (레이아웃 겹침 방지) */
+.tarot-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.section-instruction {
+  text-align: center;
+}
+
+.instruction-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #800f2f;
+  margin-bottom: 4px;
+}
+
+.instruction-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* 타로 카드 보드 (3D Flip 영역 크기 고정 및 겹침 방지) */
+.cards-spread-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  perspective: 1000px;
+  min-height: 270px; /* 고정 최소 높이로 하단 영역과 완전 분리 */
+  position: relative;
+  margin: 8px 0;
+}
+
+/* 카드 슬롯 크기 완전 고정 */
+.tarot-card-slot {
+  position: relative;
+  width: 155px;
+  height: 250px;
+  perspective: 1000px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tarot-card-slot.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.tarot-card-slot:hover .card-inner {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(230, 57, 70, 0.2);
+}
+
+.tarot-card-slot.flipped:hover .card-inner {
+  transform: rotateY(180deg) translateY(-6px);
+}
+
+/* 카드 앞면/뒷면 위치 및 크기 완전 동일하게 밀착 */
+.card-front, .card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-pink);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 10px;
+  overflow: hidden;
+}
+
+/* 카드 뒷면 */
+.card-back {
+  background: linear-gradient(145deg, #ffccd5 0%, #ff85a2 100%);
+  justify-content: center;
+  z-index: 2;
+}
+
+.card-back::before {
+  content: '✦';
+  font-size: 2.8rem;
+  color: #ffffff;
+}
+
+.card-back-pattern {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* 카드 앞면 */
+.card-front {
+  background: #ffffff;
+  transform: rotateY(180deg);
+  border-color: var(--accent-pink);
+  z-index: 1;
+}
+
+.card-number {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #c9184a;
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin: 6px 0;
+}
+
+.card-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.card-slot-label {
+  font-size: 0.8rem;
+  color: #a4133c;
+  background: #fff0f3;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* 공통 버튼 디자인 */
+.action-btn {
+  background: var(--accent-pink);
+  color: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(255, 77, 109, 0.3);
+  transition: var(--transition-smooth);
+}
+
+.action-btn:hover {
+  background: #ff0054;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 0, 84, 0.4);
+}
+
+/* 6. Gemini AI 리딩 세션 */
+.reading-section {
+  display: none;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+  margin-top: 10px;
+}
+
+.reading-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-pink);
+  padding-bottom: 12px;
+}
+
+.reading-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #800f2f;
+}
+
+.reading-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0;
+}
+
+.loading-text {
+  color: var(--accent-pink);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #ffccd5;
+  border-top: 3px solid var(--accent-pink);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 7. 부적 섹션 */
+.amulet-section {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.amulet-title-box {
+  text-align: center;
+}
+
+.amulet-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #800f2f;
+  margin-bottom: 4px;
+}
+
+.amulet-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.canvas-wrapper {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-pink);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+#amuletCanvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.save-btn {
+  background: #c9184a;
+}
+
+.save-btn:hover {
+  background: #a4133c;
+}
+
+/* Footer */
+.app-footer {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* 모바일 반응형 대응 */
+@media (max-width: 600px) {
+  .app-title { font-size: 1.8rem; }
+  .weather-card { flex-direction: column; align-items: flex-start; }
+  .tarot-card-slot { width: 100px; height: 165px; }
+  .card-icon { font-size: 2.2rem; }
+  .card-name { font-size: 0.8rem; }
+  .cards-spread-container { gap: 10px; min-height: 180px; }
+  .reading-section, .amulet-section { padding: 20px; }
+}
